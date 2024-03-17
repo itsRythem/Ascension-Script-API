@@ -6,7 +6,7 @@ It serves as an API interface for generating scripting bindings and json documen
 ## Purpose
 
 This library is intended to be used as a resource for learning and experimentation with scripting in general, you may use this in your own project as-is (pre existing binding-templates).
-However this is not recommended and we would prefer you make it unique to your own api, and simply use the pre existing bindings, as a reference instead.
+However this is not recommended and we would prefer you make it unique to your own api. Simply use the pre existing bindings as a reference to make your own!
 
 ## Key Features
 
