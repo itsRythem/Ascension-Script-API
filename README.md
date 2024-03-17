@@ -19,23 +19,22 @@ By providing access to these key features, developers can create dynamic, and mo
 
 ### Setup
 
-1. Clone project.
-2. Open in any common ide that supports maven.
-3. Modify and or add new binding templates and register them.
-4. Build project.
+- **1**: Clone project.
+- **2**: Open in any common ide that supports maven.
+- **3**: Modify and or add new binding templates and register them.
+- **4**: Build project.
 
 ### Implementation
 
-1. Add built jar to your build system.
-2. Create implementations of your binding templates.
-3. Create a new script engine, supply it to the controller, and generate the bindings.
-4. Evaluate your script to the script engine with the generated bindings.
+- **1**: Add built jar to your build system.
+- **2**: Create implementations of your binding templates.
+- **3**: Create a new script engine, supply it to the controller, and generate the bindings.
+- **4**: Evaluate your script to the script engine with the generated bindings.
 
 ### Command Line
 
 The following commands are currently accessible.
-
---genDocs ; Generates the json object and prints it to console.
+- **--genDocs**: Generates the json object and prints it to console.
 
 ## Contributing
 
