@@ -33,7 +33,7 @@ By providing access to these key features, developers can create dynamic, and mo
 
 ### Command Line
 
-The following commands are currently accessible.
+The following commands are currently accessible. \n
 --genDocs ; Generates the json object and prints it to console.
 
 ## Contributing
