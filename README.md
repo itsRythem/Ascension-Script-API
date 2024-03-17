@@ -34,7 +34,7 @@ By providing access to these key features, developers can create dynamic, and mo
 ### Command Line
 
 The following commands are currently accessible.
-- **--config <path>**: Provides the location to the config.
+- **--config [<path>]**: Provides the location to the config.
 
 ## Contributing
 
