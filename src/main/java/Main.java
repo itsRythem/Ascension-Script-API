@@ -16,8 +16,6 @@ public final class Main {
         if (getOrDefault("genDocs", false)) {
             System.out.println(controller.generateDocumentation());
         }
-
-        System.out.println(getOrDefault("genDocs", false));
     }
 
     private static String getOrDefault(final String key, final String defaultValue) {
