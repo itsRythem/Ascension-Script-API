@@ -31,11 +31,6 @@ By providing access to these key features, developers can create dynamic, and mo
 - **3**: Create a new script engine, supply it to the controller, and generate the bindings.
 - **4**: Evaluate your script to the script engine with the generated bindings.
 
-### Command Line
-
-The following commands are currently accessible.
-- **--config [(path)]**: Provides the location to the config.
-
 ## Contributing
 
 Contributions to the Scripting API Library are welcome! This project is open-source and welcomes pull requests for improvements, bug fixes, and new features.
