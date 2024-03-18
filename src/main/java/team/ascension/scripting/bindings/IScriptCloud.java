@@ -5,7 +5,7 @@ import team.ascension.scripting.annotation.ScriptFunction;
 import team.ascension.scripting.annotation.ScriptParameter;
 
 @ScriptClass(name = "Cloud")
-public interface IScriptCloud<T, E> {
+public interface IScriptCloud<User, FriendRequest> {
 
     @ScriptFunction(name = "uploadFile", documentation = "Uploads a file to the users cloud.")
     void uploadFile(@ScriptParameter(name = "path") final String path, @ScriptParameter(name = "contents") final String contents);
@@ -35,12 +35,12 @@ public interface IScriptCloud<T, E> {
     long getUsedStorage();
 
     @ScriptFunction(name = "getUser", returnType = "User", documentation = "Returns a user by their id.")
-    T getUser(final int id);
+    User getUser(final int id);
 
     @ScriptFunction(name = "getLocalUser", returnType = "User", documentation = "Returns the local user.")
-    T getLocalUser();
+    User getLocalUser();
 
     @ScriptFunction(name = "getFriendRequests", returnType = "FriendRequest[]", documentation = "Returns the users friend requests.")
-    E[] getFriendRequests();
+    FriendRequest[] getFriendRequests();
 
 }
