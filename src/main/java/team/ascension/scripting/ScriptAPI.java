@@ -1,5 +1,7 @@
 package team.ascension.scripting;
 
+import team.ascension.scripting.bindings.IScriptClient;
+import team.ascension.scripting.bindings.IScriptCloud;
 import team.ascension.scripting.bindings.IScriptMath;
 
 public class ScriptAPI {
@@ -13,6 +15,8 @@ public class ScriptAPI {
         this.version = version;
 
         this.templateController.register(IScriptMath.class);
+        this.templateController.register(IScriptCloud.class);
+        this.templateController.register(IScriptClient.class);
     }
 
     public ScriptController getController() {

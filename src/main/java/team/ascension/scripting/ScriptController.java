@@ -89,7 +89,9 @@ public class ScriptController {
                 if (functionDocumentation != null && functionDocumentation.length() > 0) {
                     functionObject.addProperty("documentation", functionDocumentation);
                 }
-                functionObject.addProperty("type", function.key.key.getReturnType().getSimpleName());
+
+                final String returnType = function.key.value.returnType();
+                functionObject.addProperty("return_type", (returnType != null && returnType.length() > 0 ? returnType : function.key.key.getReturnType().getSimpleName()));
 
                 final JsonArray parameters = new JsonArray();
                 for (final ScriptAnnotationProcessor.ScriptPair<Parameter, ScriptParameter> parameter : function.value) {

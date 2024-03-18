@@ -11,6 +11,8 @@ public @interface ScriptFunction {
 
     String name();
 
+    String returnType() default "";
+
     String documentation() default "";
 
 }

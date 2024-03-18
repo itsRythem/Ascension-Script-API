@@ -8,18 +8,18 @@ import team.ascension.scripting.annotation.ScriptParameter;
 public interface IScriptMath {
 
     @ScriptFunction(name = "fact", documentation = "Calculates the factorial from a set number of operations.")
-    long fact(@ScriptParameter(name = "n", documentation = "The number of iterations to perform.") final int n);
+    long fact(@ScriptParameter(name = "n") final int n);
 
     @ScriptFunction(name = "sum", documentation = "Calculates the sum of a data set.")
-    float sum(final float[] data);
+    float sum(@ScriptParameter(name = "data") final float[] data);
 
     @ScriptFunction(name = "max", documentation = "Finds the maximum value within a data set.")
-    float max(final float[] data);
+    float max(@ScriptParameter(name = "data") final float[] data);
 
     @ScriptFunction(name = "min", documentation = "Finds the minimum value within a data set.")
-    float min(final float[] data);
+    float min(@ScriptParameter(name = "data") final float[] data);
 
     @ScriptFunction(name = "avg", documentation = "Calculates the average of a data set.")
-    float avg(final float[] data);
+    float avg(@ScriptParameter(name = "data") final float[] data);
 
 }

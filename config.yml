@@ -1,0 +1,4 @@
+generate-json: true
+allow-type-reflection: true
+
+output-file: output.json
