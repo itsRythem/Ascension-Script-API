@@ -26,7 +26,11 @@ public class Controller {
     }
 
     public void register(final Class<?> clazz) {
-        this.bindings.put(clazz, PROCESSOR.process(clazz));
+        this.bindings.put(clazz, PROCESSOR.process(clazz, clazz));
+    }
+
+    public void register(final Class<?> superClass, final Class<?> subClass) {
+        this.bindings.put(superClass, PROCESSOR.process(superClass, subClass));
     }
 
     public void unregister(final Class<?> clazz) {
@@ -36,14 +40,14 @@ public class Controller {
     public Bindings generateBindings(final ScriptEngine engine) {
         final Bindings bindings = engine.createBindings();
 
-        for (final AnnotationProcessor.BindingRegistry set : this.bindings.values()) {
-            final String typeName = set.clazz.value.name();
+        for (final AnnotationProcessor.BindingRegistry registry : this.bindings.values()) {
+            final String typeName = registry.clazz.value.name();
 
-            for (final AnnotationProcessor.Pair<Field, ScriptField> field : set.fields) {
+            for (final AnnotationProcessor.Pair<Field, ScriptField> field : registry.fields) {
                 bindings.put(typeName + "." + field.value.name(), field.key);
             }
 
-            for (final AnnotationProcessor.Pair<AnnotationProcessor.Pair<Method, ScriptFunction>, List<AnnotationProcessor.Pair<Parameter, ScriptParameter>>> function : set.functions) {
+            for (final AnnotationProcessor.Pair<AnnotationProcessor.Pair<Method, ScriptFunction>, List<AnnotationProcessor.Pair<Parameter, ScriptParameter>>> function : registry.functions) {
                 bindings.put(typeName + "." + function.key.value.name(), function.key);
             }
         }
@@ -57,16 +61,16 @@ public class Controller {
 
         final JsonArray classes = new JsonArray();
 
-        for (final AnnotationProcessor.BindingRegistry set : this.bindings.values()) {
+        for (final AnnotationProcessor.BindingRegistry registry : this.bindings.values()) {
             final JsonObject classObject = new JsonObject();
-            classObject.addProperty("name", set.clazz.value.name());
-            final String classDocumentation = set.clazz.value.documentation();
+            classObject.addProperty("name", registry.clazz.value.name());
+            final String classDocumentation = registry.clazz.value.documentation();
             if (classDocumentation != null && classDocumentation.length() > 0) {
                 classObject.addProperty("documentation", classDocumentation);
             }
 
             final JsonArray fields = new JsonArray();
-            for (final AnnotationProcessor.Pair<Field, ScriptField> field : set.fields) {
+            for (final AnnotationProcessor.Pair<Field, ScriptField> field : registry.fields) {
                 final JsonObject fieldObject = new JsonObject();
 
                 fieldObject.addProperty("name", field.value.name());
@@ -81,7 +85,7 @@ public class Controller {
             classObject.add("fields", fields);
 
             final JsonArray functions = new JsonArray();
-            for (final AnnotationProcessor.Pair<AnnotationProcessor.Pair<Method, ScriptFunction>, List<AnnotationProcessor.Pair<Parameter, ScriptParameter>>> function : set.functions) {
+            for (final AnnotationProcessor.Pair<AnnotationProcessor.Pair<Method, ScriptFunction>, List<AnnotationProcessor.Pair<Parameter, ScriptParameter>>> function : registry.functions) {
                 final JsonObject functionObject = new JsonObject();
                 functionObject.addProperty("name", function.key.value.name());
 
