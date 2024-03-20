@@ -20,8 +20,8 @@ public class Controller {
     private static final AnnotationProcessor PROCESSOR = new AnnotationProcessor();
     private final Map<Class<?>, AnnotationProcessor.BindingRegistry> bindings = new ConcurrentHashMap<>();
 
-    public final ScriptAPI api;
-    public Controller(final ScriptAPI api) {
+    public final APISystem api;
+    public Controller(final APISystem api) {
         this.api = api;
     }
 
@@ -57,8 +57,6 @@ public class Controller {
 
     public JsonObject generateDocumentation() {
         final JsonObject object = new JsonObject();
-        object.addProperty("version", this.api.getVersion());
-
         final JsonArray classes = new JsonArray();
 
         for (final AnnotationProcessor.BindingRegistry registry : this.bindings.values()) {
