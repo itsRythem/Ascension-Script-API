@@ -1,7 +1,7 @@
 import com.google.gson.GsonBuilder;
 import org.simpleyaml.configuration.file.YamlFile;
 import team.ascension.scripting.ScriptAPI;
-import team.ascension.scripting.ScriptController;
+import team.ascension.scripting.Controller;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,7 +13,7 @@ public final class Main {
     private static YamlFile config;
 
     public static void main(final String[] args) {
-        final ScriptController controller = ScriptAPI.INSTANCE.getTemplateController();
+        final Controller controller = ScriptAPI.INSTANCE.getTemplateController();
 
         if (args.length < 1) {
             throw new RuntimeException("Config file not found.");

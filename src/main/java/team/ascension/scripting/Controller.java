@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ScriptController {
+public class Controller {
 
-    private static final ScriptAnnotationProcessor PROCESSOR = new ScriptAnnotationProcessor();
-    private final Map<Class<?>, ScriptAnnotationProcessor.ScriptSet> bindings = new ConcurrentHashMap<>();
+    private static final AnnotationProcessor PROCESSOR = new AnnotationProcessor();
+    private final Map<Class<?>, AnnotationProcessor.BindingRegistry> bindings = new ConcurrentHashMap<>();
 
     public final ScriptAPI api;
-    public ScriptController(final ScriptAPI api) {
+    public Controller(final ScriptAPI api) {
         this.api = api;
     }
 
@@ -36,14 +36,14 @@ public class ScriptController {
     public Bindings generateBindings(final ScriptEngine engine) {
         final Bindings bindings = engine.createBindings();
 
-        for (final ScriptAnnotationProcessor.ScriptSet set : this.bindings.values()) {
+        for (final AnnotationProcessor.BindingRegistry set : this.bindings.values()) {
             final String typeName = set.clazz.value.name();
 
-            for (final ScriptAnnotationProcessor.ScriptPair<Field, ScriptField> field : set.fields) {
+            for (final AnnotationProcessor.Pair<Field, ScriptField> field : set.fields) {
                 bindings.put(typeName + "." + field.value.name(), field.key);
             }
 
-            for (final ScriptAnnotationProcessor.ScriptPair<ScriptAnnotationProcessor.ScriptPair<Method, ScriptFunction>, List<ScriptAnnotationProcessor.ScriptPair<Parameter, ScriptParameter>>> function : set.functions) {
+            for (final AnnotationProcessor.Pair<AnnotationProcessor.Pair<Method, ScriptFunction>, List<AnnotationProcessor.Pair<Parameter, ScriptParameter>>> function : set.functions) {
                 bindings.put(typeName + "." + function.key.value.name(), function.key);
             }
         }
@@ -53,11 +53,11 @@ public class ScriptController {
 
     public JsonObject generateDocumentation() {
         final JsonObject object = new JsonObject();
-        object.addProperty("version", this.api.version);
+        object.addProperty("version", this.api.getVersion());
 
         final JsonArray classes = new JsonArray();
 
-        for (final ScriptAnnotationProcessor.ScriptSet set : this.bindings.values()) {
+        for (final AnnotationProcessor.BindingRegistry set : this.bindings.values()) {
             final JsonObject classObject = new JsonObject();
             classObject.addProperty("name", set.clazz.value.name());
             final String classDocumentation = set.clazz.value.documentation();
@@ -66,7 +66,7 @@ public class ScriptController {
             }
 
             final JsonArray fields = new JsonArray();
-            for (final ScriptAnnotationProcessor.ScriptPair<Field, ScriptField> field : set.fields) {
+            for (final AnnotationProcessor.Pair<Field, ScriptField> field : set.fields) {
                 final JsonObject fieldObject = new JsonObject();
 
                 fieldObject.addProperty("name", field.value.name());
@@ -81,7 +81,7 @@ public class ScriptController {
             classObject.add("fields", fields);
 
             final JsonArray functions = new JsonArray();
-            for (final ScriptAnnotationProcessor.ScriptPair<ScriptAnnotationProcessor.ScriptPair<Method, ScriptFunction>, List<ScriptAnnotationProcessor.ScriptPair<Parameter, ScriptParameter>>> function : set.functions) {
+            for (final AnnotationProcessor.Pair<AnnotationProcessor.Pair<Method, ScriptFunction>, List<AnnotationProcessor.Pair<Parameter, ScriptParameter>>> function : set.functions) {
                 final JsonObject functionObject = new JsonObject();
                 functionObject.addProperty("name", function.key.value.name());
 
@@ -94,7 +94,7 @@ public class ScriptController {
                 functionObject.addProperty("return_type", (returnType != null && returnType.length() > 0 ? returnType : function.key.key.getReturnType().getSimpleName()));
 
                 final JsonArray parameters = new JsonArray();
-                for (final ScriptAnnotationProcessor.ScriptPair<Parameter, ScriptParameter> parameter : function.value) {
+                for (final AnnotationProcessor.Pair<Parameter, ScriptParameter> parameter : function.value) {
                     final JsonObject parameterObject = new JsonObject();
                     parameterObject.addProperty("name", parameter.value.name());
                     final String parameterDocumentation = parameter.value.documentation();
@@ -102,7 +102,8 @@ public class ScriptController {
                         parameterObject.addProperty("documentation", parameterDocumentation);
                     }
 
-                    parameterObject.addProperty("type", parameter.key.getType().getSimpleName());
+                    final String type = parameter.value.type();
+                    parameterObject.addProperty("type", (type != null && type.length() > 0 ? type : parameter.key.getType().getSimpleName()));
                     parameters.add(parameterObject);
                 }
                 functionObject.add("parameters", parameters);

@@ -4,14 +4,13 @@ import team.ascension.scripting.bindings.IScriptClient;
 import team.ascension.scripting.bindings.IScriptCloud;
 import team.ascension.scripting.bindings.IScriptMath;
 
-public class ScriptAPI {
+public enum ScriptAPI {
 
-    public static final ScriptAPI INSTANCE = new ScriptAPI(1);
+    INSTANCE(1);
 
-    private final ScriptController templateController = new ScriptController(this);
-
-    public final int version;
-    public ScriptAPI(final int version) {
+    private final Controller templateController = getController();
+    private final int version;
+    ScriptAPI(final int version) {
         this.version = version;
 
         this.templateController.register(IScriptMath.class);
@@ -19,12 +18,17 @@ public class ScriptAPI {
         this.templateController.register(IScriptClient.class);
     }
 
-    public ScriptController getController() {
-        return new ScriptController(this);
+    public int getVersion() {
+        return this.version;
     }
 
-    public ScriptController getTemplateController() {
+    public Controller getController() {
+        return new Controller(this);
+    }
+
+    public Controller getTemplateController() {
         return this.templateController;
     }
+
 
 }

@@ -35,7 +35,7 @@ public interface IScriptCloud<User, FriendRequest> {
     long getUsedStorage();
 
     @ScriptFunction(name = "getUser", returnType = "User", documentation = "Returns a user by their id.")
-    User getUser(final int id);
+    User getUser(@ScriptParameter(name = "id") final int id);
 
     @ScriptFunction(name = "getLocalUser", returnType = "User", documentation = "Returns the local user.")
     User getLocalUser();

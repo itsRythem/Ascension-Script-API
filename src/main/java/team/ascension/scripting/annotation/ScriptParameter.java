@@ -11,6 +11,8 @@ public @interface ScriptParameter {
 
     String name();
 
+    String type() default "";
+
     String documentation() default "";
 
 }
