@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import team.ascension.scripting.annotation.ScriptField;
 import team.ascension.scripting.annotation.ScriptFunction;
 import team.ascension.scripting.annotation.ScriptParameter;
+import team.ascension.scripting.js.DynamicFunction;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
@@ -29,8 +30,8 @@ public class Controller {
         this.bindings.put(clazz, PROCESSOR.process(clazz, clazz));
     }
 
-    public void register(final Class<?> superClass, final Class<?> subClass) {
-        this.bindings.put(superClass, PROCESSOR.process(superClass, subClass));
+    public void register(final Class<?> superClass, final Object instance) {
+        this.bindings.put(superClass, PROCESSOR.process(superClass, instance));
     }
 
     public void unregister(final Class<?> clazz) {
@@ -42,15 +43,17 @@ public class Controller {
 
         for (final AnnotationProcessor.BindingRegistry registry : this.bindings.values()) {
             final String typeName = registry.clazz.value.name();
+            final Bindings namespaceBindings = engine.createBindings();
 
             for (final AnnotationProcessor.Pair<Field, ScriptField> field : registry.fields) {
-                bindings.put(typeName + "." + field.value.name(), field.key);
+                namespaceBindings.put(typeName + "." + field.value.name(), field.key);
             }
 
             for (final AnnotationProcessor.Pair<AnnotationProcessor.Pair<Method, ScriptFunction>, List<AnnotationProcessor.Pair<Parameter, ScriptParameter>>> function : registry.functions) {
-                System.out.println(typeName + "." + function.key.value.name());
-                bindings.put(typeName + "." + function.key.value.name(), function.key.key);
+                namespaceBindings.put(function.key.value.name(), new DynamicFunction(registry.clazz.key.value, function.key.key));
             }
+
+            bindings.put(typeName, namespaceBindings);
         }
 
         return bindings;

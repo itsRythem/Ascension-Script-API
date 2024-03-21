@@ -18,9 +18,10 @@ public final class AnnotationProcessor {
     public AnnotationProcessor() {
     }
 
-    public BindingRegistry process(final Class<?> superClass, final Class<?> subClass) {
+    public BindingRegistry process(final Class<?> superClass, final Object instance) {
         if (superClass.isAnnotationPresent(ScriptClass.class)) {
-            final Pair<Class<?>, ScriptClass> scriptClass = new Pair<>(subClass, superClass.getAnnotation(ScriptClass.class));
+            final Class<?> subClass = instance.getClass();
+            final Pair<Pair<Class<?>, Object>, ScriptClass> scriptClass = new Pair<>(new Pair<>(superClass, instance), superClass.getAnnotation(ScriptClass.class));
             final List<Pair<Field, ScriptField>> fields = new ArrayList<>();
             final List<Pair<Pair<Method, ScriptFunction>, List<Pair<Parameter, ScriptParameter>>>> functions = new ArrayList<>();
 
@@ -68,10 +69,10 @@ public final class AnnotationProcessor {
 
     public static class BindingRegistry {
 
-        public final Pair<Class<?>, ScriptClass> clazz;
+        public final Pair<Pair<Class<?>, Object>, ScriptClass> clazz;
         public final List<Pair<Field, ScriptField>> fields;
         public final List<Pair<Pair<Method, ScriptFunction>, List<Pair<Parameter, ScriptParameter>>>> functions;
-        public BindingRegistry(final Pair<Class<?>, ScriptClass> clazz, final List<Pair<Field, ScriptField>> fields, final List<Pair<Pair<Method, ScriptFunction>, List<Pair<Parameter, ScriptParameter>>>> functions) {
+        public BindingRegistry(final Pair<Pair<Class<?>, Object>, ScriptClass> clazz, final List<Pair<Field, ScriptField>> fields, final List<Pair<Pair<Method, ScriptFunction>, List<Pair<Parameter, ScriptParameter>>>> functions) {
             this.clazz = clazz;
             this.fields = fields;
             this.functions = functions;
