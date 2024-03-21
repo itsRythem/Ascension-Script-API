@@ -5,11 +5,11 @@ import org.openjdk.nashorn.api.scripting.AbstractJSObject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public final class DynamicFunction extends AbstractJSObject {
+public final class FunctionObject extends AbstractJSObject {
 
     private final Object classInstance;
     private final Method method;
-    public DynamicFunction(final Object classInstance, final Method method) {
+    public FunctionObject(final Object classInstance, final Method method) {
         this.classInstance = classInstance;
         this.method = method;
     }

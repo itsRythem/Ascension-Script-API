@@ -5,7 +5,8 @@ import com.google.gson.JsonObject;
 import team.ascension.scripting.annotation.ScriptField;
 import team.ascension.scripting.annotation.ScriptFunction;
 import team.ascension.scripting.annotation.ScriptParameter;
-import team.ascension.scripting.js.DynamicFunction;
+import team.ascension.scripting.js.FieldObject;
+import team.ascension.scripting.js.FunctionObject;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
@@ -46,11 +47,11 @@ public class Controller {
             final Bindings namespaceBindings = engine.createBindings();
 
             for (final AnnotationProcessor.Pair<Field, ScriptField> field : registry.fields) {
-                namespaceBindings.put(typeName + "." + field.value.name(), field.key);
+                namespaceBindings.put(field.value.name(), new FieldObject(registry.clazz.key.value, field.key));
             }
 
             for (final AnnotationProcessor.Pair<AnnotationProcessor.Pair<Method, ScriptFunction>, List<AnnotationProcessor.Pair<Parameter, ScriptParameter>>> function : registry.functions) {
-                namespaceBindings.put(function.key.value.name(), new DynamicFunction(registry.clazz.key.value, function.key.key));
+                namespaceBindings.put(function.key.value.name(), new FunctionObject(registry.clazz.key.value, function.key.key));
             }
 
             bindings.put(typeName, namespaceBindings);
