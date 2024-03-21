@@ -48,7 +48,8 @@ public class Controller {
             }
 
             for (final AnnotationProcessor.Pair<AnnotationProcessor.Pair<Method, ScriptFunction>, List<AnnotationProcessor.Pair<Parameter, ScriptParameter>>> function : registry.functions) {
-                bindings.put(typeName + "." + function.key.value.name(), function.key);
+                System.out.println(typeName + "." + function.key.value.name());
+                bindings.put(typeName + "." + function.key.value.name(), function.key.key);
             }
         }
 
